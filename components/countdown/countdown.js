@@ -1,7 +1,7 @@
 // Simple countdown overlay — set targetISO to your desired local date-time (YYYY-MM-DDTHH:MM:SS)
 (function(){
   // TODO: change this to your target local date/time
-  const targetISO = '2025-10-30T00:00:00';
+  const targetISO = '2025-10-31T00:00:00';
   const target = new Date(targetISO);
   const overlay = document.getElementById('countdown-overlay');
   const timerEl = document.getElementById('countdown');
