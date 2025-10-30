@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Geetu</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="components/pulsing-text/pulsing-text.css">
+    <link rel="stylesheet" href="components/countdown/countdown.css">
+    
+<body>
+  <div id="countdown-overlay" class="countdown-overlay" role="dialog" aria-modal="true" aria-label="Countdown until reveal">
+    <div class="countdown-content">
+      <h2 id="countdown-title">Opening soon</h2>
+      <div id="countdown" aria-live="polite" class="countdown-timer"></div>
+    </div>
+  </div>
+  <div class="heart-background layer-bg" aria-hidden="true"></div>
+
+  <div id="birthday-animation" class="hidden layer-base"></div>
+
+  <!-- Diary / flip-book (same layer-top as photo) -->
+  <div class="diary layer-top" aria-label="Diary - flip pages to add wishes">
+    <div class="diary-controls" aria-hidden="true">
+      <button id="diary-prev" class="btn-ghost">◀ Prev</button>
+      <button id="diary-next" class="btn-primary">Next ▶</button>
+    </div>
+
+    <div class="book" id="book" role="region" aria-label="Diary book">
+      <!-- COVER FRONT (flip like a real book cover) -->
+      <div class="page cover cover-front" data-page="0">
+        <div class="page-front">
+          <div class="page-content">
+            <!-- Replace with cover title / art -->
+            <h1>Open
+                this
+                to see what is written inside! 
+
+            </h1>
+          </div>
+        </div>
+        <div class="page-back">
+          <!-- backside of front cover (usually blank or patterned) -->
+          <div class="page-content"> </div>
+        </div>
+      </div>
+
+      <!-- INNER PAGES: replace placeholder text with your manual content -->
+      <div class="page" data-page="1">
+        <div class="page-front"><div class="page-content">Happy Birthday, Rasmalai💕!
+
+You are, without a doubt, the reason for the boundless happiness in my life, and I can never thank you enough for it.
+
+To my angel, you are one of the greatest blessings I have ever received. I feel so lucky to know someone as kind, pure, and truly wonderful as you. Your presence makes every single moment brighter, and your gentle heart is a constant reminder of just how special you truly are.</div></div>
+        
+      </div>
+
+      <div class="page" data-page="2">
+        <div class="page-front"><div class="page-content">On this day, I wish you endless happiness, laughter that never fades, and dreams that always come true, because you deserve all the love and joy in the entire world.
+
+As you celebrate, may every moment be filled with peace, love, and blessings that follow you throughout the year. Always remember the immense light and positivity you bring into the world simply by being yourself.</div></div>
+      </div>
+
+      <div class="page" data-page="3">
+        <div class="page-front"><div class="page-content">Happy Birthday once again, my angel—may this day and every day ahead be as magical as you are.</div></div>
+      </div>
+
+      <!-- COVER BACK (outside back cover) -->
+      <div class="page cover cover-back" data-page="99">
+        <div class="page-front">
+          <div class="page-content"> </div>
+        </div>
+        <div class="page-back">
+          <div class="page-content">
+            <!-- small back-cover note -->
+            <small>Made with ❤</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo placeholder fixed at bottom (same layer-top) -->
+  <div id="photo-placeholder" class="layer-top" aria-label="Birthday photo placeholder">
+    <div class="photo-frame">
+      <img src="animation/geetu-5400x1080.png" alt="Geetu birthday photo (5400x1080)">
+    </div>
+  </div>
+
+  <!-- removed duplicate countdown element to avoid ID conflicts (overlay already provides the timer) -->
+
+  <script src="components/include-html.js"></script>
+  <script src="components/diary/diary.js"></script>
+  <script src="components/countdown/countdown.js"></script>
+</body>
+</html>

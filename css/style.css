@@ -1,0 +1,413 @@
+/* global decorative background — MUST be a direct child of <body> only */
+.heart-background {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,182,193,0.5) 20%, rgba(255,105,180,0.5) 40%, rgba(255,20,147,0.5) 60%);
+    pointer-events: none;
+    z-index: 0;          /* base layer */
+    mix-blend-mode: normal; /* ensure no unexpected blending */
+    filter: none;          /* ensure no blur/filter is applied */
+}
+
+/* ensure document creates stacking context */
+body {
+    position: relative;
+    z-index: 0;
+}
+
+h1 {
+    text-align: center;
+    font-size: 3em;
+    color: #ff69b4;
+    margin-top: 20px;
+}
+
+
+
+.pulsing-text {
+    text-align: center;
+    font-size: 2.5em;
+    color: #ff4500;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.birthday-animation {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none; /* Initially hidden */
+}
+
+/* Postcard / diary UI (paper look) */
+.postcard {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(24px + 260px); /* sits above the bottom photo; adjusted by photo max-height */
+  z-index: 11; /* same layer-top zone, above most UI but below #countdown overlay */
+  width: calc(100% - 48px);
+  max-width: 720px;
+  pointer-events: auto;
+}
+
+.postcard-paper {
+  background: linear-gradient(180deg,#fffdf6,#fff8ef);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  border: 1px solid rgba(0,0,0,0.06);
+  box-sizing: border-box;
+  font-family: 'Georgia', serif;
+}
+
+.postcard-title {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  color: #333;
+  text-align: left;
+}
+
+/* textarea styled like diary paper */
+.postcard-note {
+  width: 100%;
+  min-height: 120px;
+  max-height: 280px;
+  resize: vertical;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px dashed rgba(0,0,0,0.08);
+  background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(250,250,245,0.95));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #222;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+}
+
+/* action buttons */
+.postcard-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.btn-primary {
+  background: #ff69b4;
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(255,105,180,0.18);
+}
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.08);
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Bottom photo: fixed so it always sits at viewport bottom (same layer-top) */
+#photo-placeholder {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10; /* under postcard but above background and animation */
+  width: calc(100% - 48px);
+  max-width: 1200px;
+  box-sizing: border-box;
+  text-align: center;
+  pointer-events: auto;
+}
+
+/* Make the gold frame opaque so background doesn't tint through */
+.photo-frame {
+  display: inline-block;
+  width: 100%;
+  border: 8px solid #D4AF37; /* gold */
+  border-radius: 10px;
+  padding: 6px;
+  background: #fff; /* solid background prevents tinting from behind */
+  box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+  box-sizing: border-box;
+  position: relative;
+  z-index: 11; /* above the photo placeholder container */
+}
+
+/* keep image responsive */
+.photo-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  max-height: 240px; /* controls visible height; adjust as needed */
+  filter: none; /* ensure image itself has no blur */
+  mix-blend-mode: normal;
+}
+
+/* If you want to force-visible the photo during debugging while keeping .hidden in markup:
+   remove this rule once your scripts toggle .hidden appropriately */
+#photo-placeholder.hidden {
+    display: block !important;
+}
+
+/* animation/pulsing text sits above background but below photo */
+#birthday-animation,
+.pulsing-text-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* Diary / flip-book styles */
+.diary {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(24px + 320px); /* sits above the bottom photo */
+  z-index: 12; /* same layer-top zone, above photo */
+  pointer-events: auto;
+  width: calc(100% - 48px);
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* small control buttons row */
+.diary-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Book cover & spine styling to make diary look like a real book */
+.book {
+  width: 100%;
+  max-width: 720px;
+  height: 240px;            /* slightly taller for cover feel */
+  perspective: 1800px;
+  position: relative;
+  pointer-events: auto;
+  margin-top: 6px;
+}
+
+/* add visible spine and thickness */
+.book::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 6px;
+  bottom: 6px;
+  width: 18px;
+  background: linear-gradient(90deg, rgba(0,0,0,0.08), rgba(0,0,0,0.02));
+  border-radius: 6px;
+  z-index: 100;
+  pointer-events: none;
+}
+.book::after {
+  content: "";
+  position: absolute;
+  left: 26px;
+  top: 10px;
+  bottom: 10px;
+  width: 6px; /* book thickness */
+  background: linear-gradient(90deg, rgba(0,0,0,0.04), rgba(255,255,255,0.02));
+  border-radius: 4px;
+  z-index: 90;
+  pointer-events: none;
+}
+
+/* single page base styles (unchanged) */
+.page {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(100% - 32px);
+  height: 100%;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 700ms cubic-bezier(.2,.9,.3,1), z-index 0ms linear 700ms;
+  box-sizing: border-box;
+  left: 16px;
+  border-radius: 6px;
+}
+
+/* cover pages: thicker, more pronounced shadow, different transition */
+.page.cover {
+  width: calc(100% - 20px);
+  transform-origin: left center;
+  transition: transform 900ms cubic-bezier(.15,.9,.25,1), box-shadow 300ms;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* front cover face */
+.page.cover .page-front {
+  background: linear-gradient(180deg, #8b2d6f 0%, #c95a8a 100%); /* textured cover color */
+  color: #fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  letter-spacing:0.6px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+}
+
+/* back cover face */
+.page.cover .page-back {
+  background: linear-gradient(180deg, #562235 0%, #7a2f57 100%);
+  color: rgba(255,255,255,0.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* cover edge (simulates hardcover edge) */
+.page.cover::after {
+  content: "";
+  position: absolute;
+  right: -14px;
+  top: 6px;
+  bottom: 6px;
+  width: 14px;
+  background: linear-gradient(90deg, rgba(0,0,0,0.06), rgba(255,255,255,0.02));
+  border-radius: 3px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* subtle paper look for inner pages */
+.page-front, .page-back {
+  background: linear-gradient(180deg,#fffdf6,#fff8ef);
+}
+
+/* when flipped keep the cover flipping naturally */
+.page.flipped { transform: rotateY(-180deg); }
+
+/* make inner pages edge faint to mimic paper blocks */
+.page:not(.cover)::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  top: 8px;
+  bottom: 8px;
+  width: 6px;
+  background: linear-gradient(90deg, rgba(0,0,0,0.03), rgba(255,255,255,0.02));
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Improve diary page typography & layout */
+.page-content {
+  /* paper-like surface */
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(250,245,240,0.96)),
+    repeating-linear-gradient(transparent, transparent 26px, rgba(0,0,0,0.02) 26px, transparent 27px);
+  padding: 20px 26px;
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(100% - 32px);
+  overflow: auto;
+  border-radius: 4px;
+  color: #222;
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 1.02rem;
+  line-height: 1.65;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Paragraph spacing */
+.page-content p {
+  margin: 0 0 1.05rem 0;
+  widows: 2;
+  orphans: 2;
+}
+
+/* Subtle decorative left margin (like a ruled margin) */
+.page-content::before {
+  content: "";
+  position: absolute;
+  left: 28px; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(#f0d7e0, #f0d7e0);
+  opacity: 0.12;
+  pointer-events: none;
+  transform: translateX(-1px);
+}
+
+/* First paragraph drop-cap */
+.page-content p:first-child::first-letter {
+  float: left;
+  font-size: 3.2rem;
+  line-height: 0.9;
+  margin: 4px 10px 0 0;
+  font-weight: 700;
+  color: #8b2d6f;
+  font-family: "Georgia", serif;
+}
+
+/* Make empty page look cleaner (no visible scrollbar when empty) */
+.page-content:empty {
+  background: linear-gradient(180deg,#fffdf6,#fff8ef);
+}
+
+/* Thin, subtle scrollbars inside pages */
+.page-content::-webkit-scrollbar { width: 9px; height: 9px; }
+.page-content::-webkit-scrollbar-track { background: transparent; }
+.page-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.12));
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.5);
+}
+
+/* Ensure background-clip prevents bleed at rounded corners */
+.page-front .page-content, .page-back .page-content {
+  background-clip: padding-box;
+}
+
+/* responsive tweaks */
+@media (max-width:700px) {
+  .book { height: 180px; }
+  .page.cover { border-radius: 8px; }
+  .book::before { left: 6px; width: 14px; }
+}
+
+/* remove the page-level scrollbar while preserving inner scrolling for components like the diary pages */
+html, body {
+  height: 100%;
+  overflow: hidden; /* hide main document scrollbar */
+}
+
+/* ensure diary pages (and any other intended scroll areas) still scroll */
+.page-content {
+  overflow: auto; /* keep inner scrollable */
+}
+
+/* safety: hide any residual body scrollbar visuals on WebKit (redundant with overflow:hidden) */
+body::-webkit-scrollbar { width: 0; height: 0; background: transparent; }

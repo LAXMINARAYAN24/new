@@ -1,0 +1,95 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #ff7f7f, #ffb3b3);
+}
+
+
+
+/* visible panel that holds the texts */
+#birthday-animation .pulsing-text-wrapper{
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(6px);
+    padding: 16px 22px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(10,30,50,0.18);
+    transform-origin: center;
+}
+
+/* make the injected #birthday-animation act as a top overlay that centers content horizontally */
+#birthday-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    display: flex;
+    justify-content: center; /* center horizontally */
+    pointer-events: none;
+    z-index: 1200;
+    padding: 18px 12px; /* spacing from the top/window edges */
+}
+
+/* wrapper placed at the top center */
+#birthday-animation .pulsing-text-wrapper.top-center {
+    pointer-events: auto;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(4px);
+    padding: 12px 20px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(10,30,50,0.15);
+}
+
+/* text look */
+#birthday-animation .pulsing-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: 36px;
+    color: #163a55;
+    text-align: center;
+    margin: 0;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+
+
+/* Positioning utilities (toggle one on #birthday-animation) */
+#birthday-animation.pos-top-right    { align-items: flex-start;  justify-content: flex-end;  }
+#birthday-animation.pos-top-left     { align-items: flex-start;  justify-content: flex-start; }
+#birthday-animation.pos-bottom-right { align-items: flex-end;    justify-content: flex-end;   }
+#birthday-animation.pos-bottom-left  { align-items: flex-end;    justify-content: flex-start; }
+#birthday-animation.pos-inline       { position: static; display: block; padding: 0; }
+
+/* responsive sizing */
+@media (max-width: 720px) {
+    #birthday-animation .pulsing-text { font-size: 24px; }
+    #birthday-animation { padding: 12px; }
+    #birthday-animation .pulsing-text-wrapper.top-center { padding: 10px 14px; }
+}
